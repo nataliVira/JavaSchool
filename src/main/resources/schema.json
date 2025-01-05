@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Transaction",
+  "description": "A banking transaction",
+  "type": "object",
+  "properties": {
+    "operationType": {
+      "description": "The type of operation",
+      "type": "string",
+      "enum": ["WITHDRAWAL", "ENROLLMENT", "TRANSFER"]
+    },
+    "sum": {
+      "description": "Sum",
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "account": {
+      "type": "string",
+      "minLength": 11,
+      "maxLength": 13
+    },
+    "date": {
+      "type": "string",
+      "pattern": "^(0[1-9]|[12][0-9]|3[01]).(0[1-9]|1[0,1,2]).(19|20)\\d{2}"
+    }
+  },
+  "required": ["operationType", "sum", "account", "date"]
+}
