@@ -15,4 +15,8 @@ public class KafkaConsumerService {
         return consumer;
     }
 
+    public static void close(KafkaConsumer kafkaConsumer) {
+        kafkaConsumer.close();
+    }
+
 }
