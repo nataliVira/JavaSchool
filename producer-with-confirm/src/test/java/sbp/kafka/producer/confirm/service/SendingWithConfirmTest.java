@@ -1,7 +1,10 @@
-package sbp.school.kafka.service;
+package sbp.kafka.producer.confirm.service;
 
-import org.apache.kafka.clients.producer.RecordMetadata;
+import org.apache.kafka.common.header.Header;
+import org.apache.kafka.common.header.internals.RecordHeader;
 import org.junit.jupiter.api.Test;
+
+import sbp.kafka.consumer.service.JsonValidationService;
 import sbp.school.kafka.config.Props;
 import sbp.school.kafka.dto.Transaction;
 import sbp.school.kafka.exception.BadParameterException;
@@ -9,23 +12,21 @@ import sbp.school.kafka.exception.BadParameterException;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static sbp.school.kafka.enums.OperationTypeEnum.*;
 
-
-class SendingServiceTest {
-
+class SendingWithConfirmTest {
     @Test
     void sendToKafka() throws BadParameterException, IOException {
-        KafkaProdeucerService kafkaProdeucerService = new KafkaProdeucerService(Props.getProperties()) {
-            @Override
-            public void handleRecordMetadata(RecordMetadata recordMetadata, String key, String value, String kafkaProducerId) {
 
-            }
-        };
+        List<Header> headers = new ArrayList<>();
+        headers.add(new RecordHeader("consumerId", "1".getBytes()));
 
-        SendingService sendingService = new SendingService(kafkaProdeucerService);
+        JsonValidationService jsonValidationService = new JsonValidationService();
+
+        SendingWithConfirm sendingService = new SendingWithConfirm(Props.getProperties());
         Transaction transaction1 = new Transaction();
         transaction1.setOperationType(WITHDRAWAL);
         transaction1.setSum(new BigDecimal("0.1"));
@@ -47,6 +48,11 @@ class SendingServiceTest {
         transaction3.setDate(LocalDateTime.of(2024, 12, 13, 0, 0, 0));
         sendingService.sendToKafka(transaction3);
         sendingService.close();
+        try {
+            Thread.sleep(100000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

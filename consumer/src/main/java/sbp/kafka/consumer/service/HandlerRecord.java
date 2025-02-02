@@ -9,29 +9,40 @@ import sbp.kafka.consumer.exception.BadParameterException;
 
 import java.io.IOException;
 
-public class HandlerRecord {
+/**
+ * Класс по обработке сообщений, полученных из kafka
+ *
+ * @version 1.0
+ */
+public abstract class HandlerRecord {
+
+    private final JsonValidationService jsonValidationService = new JsonValidationService();
 
     Logger log = LoggerFactory.getLogger(HandlerRecord.class);
 
-    private final JsonValidationService jsonValidationService = new JsonValidationService();
-    private final ObjectMapper mapper = new ObjectMapper();
+    protected HandlerRecord() {
+    }
 
-    public void handleRecord(ConsumerRecord<String, String> record)  {
+    protected void handle(ConsumerRecord<String, String> record) {
         try {
-            boolean isValid = jsonValidationService.validate(record.value());
-            if (isValid) {
-                Transaction transaction = mapper.readValue(record.value(), Transaction.class);
-                System.out.println("Transaction:" + transaction.toString());
-            } else {
-                throw new BadParameterException("Not valid JSON " + record.value());
-            }
+            handle(record);
         } catch (Exception e) {
             handleErrorRecors(record, e);
         }
     }
+
+    /**
+     * Метод обработки сообщения из kafka. Реализуется пользователем
+     *
+     * @param record пара ключ/значение полученные из kafka {@link ConsumerRecord}
+     */
+    public abstract void handleRecord(ConsumerRecord<String, String> record);
+
+
 
     private void handleErrorRecors(ConsumerRecord<String, String> record, Exception e) {
         log.info("Recors topic = {}, offset = {}, partition = {} handled with error {}", record.topic(), record.offset(), record.partition(), e.getMessage());
     }
 
 }
+
