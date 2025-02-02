@@ -1,34 +1,45 @@
 package sbp.school.kafka.service;
 
 
-import org.apache.kafka.clients.producer.*;
-import org.apache.kafka.common.errors.LeaderNotAvailableException;
-import sbp.school.kafka.config.Props;
-import sbp.school.kafka.enums.OperationTypeEnum;
-import sbp.school.kafka.exception.BadParameterException;
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.RecordMetadata;
+import org.apache.kafka.common.header.Header;
+import org.apache.kafka.common.header.internals.RecordHeader;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
-import java.util.concurrent.Future;
 
 /**
  * Класс по отправке сообщений в kafka
  *
  * @version 1.0
  */
-public class KafkaProdeucerService {
+public abstract class KafkaProdeucerService {
 
-    static KafkaProducer<String, String> producer;
+    public static final String PRODUCER_ID_KEY = "id";
+    private final KafkaProducer<String, String> producer;
 
-    static {
-        Properties properties = Props.getProperties();
+    private final String kafkaProducerId;
+
+    private final List<Header> headers;
+
+    public KafkaProdeucerService(Properties properties) {
         Properties producerProperties = new Properties();
         producerProperties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, properties.get("bootstrap.servers"));
         producerProperties.put(ProducerConfig.ACKS_CONFIG, properties.get("acks"));
         producerProperties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, properties.get("key.serializer"));
         producerProperties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, properties.get("value.serializer"));
-        producerProperties.put(ProducerConfig.PARTITIONER_CLASS_CONFIG, properties.get("partitioner.class"));
         producer = new KafkaProducer<>(producerProperties);
+
+        kafkaProducerId = (String) properties.get(PRODUCER_ID_KEY);
+
+        headers = new ArrayList<>();
+        headers.add(new RecordHeader(PRODUCER_ID_KEY, kafkaProducerId.getBytes()));
     }
+
 
     /**
      * Метод асинхронной отправки сообщения в kafka
@@ -37,30 +48,43 @@ public class KafkaProdeucerService {
      * @param key   ключ сообщения
      * @param value сообщение
      */
-    public static void send(String topic, /*int partition,*/ OperationTypeEnum key, String value) {
-        ProducerRecord<String, String> record = new ProducerRecord<>(topic, /*partition,*/ key.name(), value);
+    public void send(String topic, String key, String value) {
+        ProducerRecord<String, String> record = new ProducerRecord<>(topic, KafkaProducerPartitionerService.partition(key),
+                key, value, headers);
+
         producer.send(record, (recordMetadata, e) -> {
             if (e != null) {
                 System.out.println("Error " + e.getMessage() + " offset " + recordMetadata.offset() +
                         " partition " + recordMetadata.partition());
             } else {
+                handleRecordMetadata(recordMetadata, key, value, getKafkaProducerId());
                 System.out.println("Successful " + "Topic " + recordMetadata.topic() + " Offset " + recordMetadata.offset() +
                         " Partition " + recordMetadata.partition());
             }
         });
     }
 
+    public abstract void handleRecordMetadata(RecordMetadata recordMetadata, String key, String value, String kafkaProducerId);
+
     /**
      * Метод остановки producer
      */
-    public static void close() {
+    public void close() {
         producer.close();
     }
 
     /**
      * Метод принудительной отправки сообщений в брокер
      */
-    public static void flush() {
+    public void flush() {
         producer.flush();
+    }
+
+    public List<Header> getHeaders() {
+        return this.headers;
+    }
+
+    public String getKafkaProducerId() {
+        return this.kafkaProducerId;
     }
 }

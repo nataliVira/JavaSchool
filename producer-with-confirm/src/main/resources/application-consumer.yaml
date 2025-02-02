@@ -1,0 +1,8 @@
+consumer:
+  key.deserializer: org.apache.kafka.common.serialization.StringDeserializer
+  value.deserializer: org.apache.kafka.common.serialization.StringDeserializer
+  bootstrap.servers: localhost:29092,127.0.0.1:29092
+  topic: confirm
+  group.id: consumer_0
+  enable.auto.commit: false
+#  auto.offset.reset: earliest

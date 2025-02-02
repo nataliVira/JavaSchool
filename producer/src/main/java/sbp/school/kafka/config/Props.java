@@ -10,7 +10,7 @@ public class Props {
 
     public static Properties getProperties() {
         String appProperties = Thread.currentThread().getContextClassLoader()
-                .getResource("application.yaml").getPath();
+                .getResource("application-producer.yaml").getPath();
         Properties appProps = new Properties();
         try {
             appProps.load(new FileInputStream(appProperties));
