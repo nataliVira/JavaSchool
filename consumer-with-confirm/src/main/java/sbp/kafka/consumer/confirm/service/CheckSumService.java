@@ -1,7 +1,8 @@
-package sbp.kafka.producer.confirm.service;
+package sbp.kafka.consumer.confirm.service;
 
 import java.util.zip.CRC32;
 import java.util.zip.Checksum;
+
 
 /**
  * Класс подсчета контрольной суммы.

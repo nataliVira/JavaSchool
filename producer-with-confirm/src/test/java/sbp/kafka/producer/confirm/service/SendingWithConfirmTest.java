@@ -22,7 +22,7 @@ class SendingWithConfirmTest {
     void sendToKafka() throws BadParameterException, IOException {
 
         List<Header> headers = new ArrayList<>();
-        headers.add(new RecordHeader("consumerId", "1".getBytes()));
+        headers.add(new RecordHeader("id", "1".getBytes()));
 
         JsonValidationService jsonValidationService = new JsonValidationService();
 
@@ -47,12 +47,12 @@ class SendingWithConfirmTest {
         transaction3.setAccount("11111111111");
         transaction3.setDate(LocalDateTime.of(2024, 12, 13, 0, 0, 0));
         sendingService.sendToKafka(transaction3);
-        sendingService.close();
         try {
-            Thread.sleep(100000);
+            Thread.sleep(1000000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+        sendingService.close();
     }
 
 }

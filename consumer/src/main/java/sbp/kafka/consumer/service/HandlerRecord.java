@@ -16,9 +16,9 @@ import java.io.IOException;
  */
 public abstract class HandlerRecord {
 
-    private final JsonValidationService jsonValidationService = new JsonValidationService();
-
     Logger log = LoggerFactory.getLogger(HandlerRecord.class);
+
+    private final JsonValidationService jsonValidationService = new JsonValidationService();
 
     protected HandlerRecord() {
     }
@@ -26,6 +26,9 @@ public abstract class HandlerRecord {
     protected void handle(ConsumerRecord<String, String> record) {
         try {
             handle(record);
+            boolean isValid = jsonValidationService.validate(record.value());
+            if (isValid) {
+            }
         } catch (Exception e) {
             handleErrorRecors(record, e);
         }
@@ -37,8 +40,6 @@ public abstract class HandlerRecord {
      * @param record пара ключ/значение полученные из kafka {@link ConsumerRecord}
      */
     public abstract void handleRecord(ConsumerRecord<String, String> record);
-
-
 
     private void handleErrorRecors(ConsumerRecord<String, String> record, Exception e) {
         log.info("Recors topic = {}, offset = {}, partition = {} handled with error {}", record.topic(), record.offset(), record.partition(), e.getMessage());

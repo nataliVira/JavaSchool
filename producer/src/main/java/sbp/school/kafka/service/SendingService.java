@@ -15,7 +15,7 @@ import java.util.List;
  * Класс по отправке входящих транзакций
  */
 public class SendingService {
-    
+
     private final ObjectMapper mapper;
     private final JsonValidationService jsonValidationService;
 
