@@ -8,6 +8,8 @@
         <module>consumer</module>
         <module>producer</module>
         <module>producer-with-confirm</module>
+        <module>consumer-with-confirm</module>
+        <module>utils</module>
     </modules>
 
     <properties>

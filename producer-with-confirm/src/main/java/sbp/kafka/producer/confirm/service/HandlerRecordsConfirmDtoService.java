@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import sbp.kafka.consumer.service.HandlerRecord;
 import sbp.kafka.producer.confirm.dto.ConfirmDto;
 import sbp.kafka.producer.confirm.dto.MessageDto;
+import sbp.school.kafka.service.CheckSumService;
 import sbp.school.kafka.service.SendingService;
 
 import java.util.List;
@@ -38,22 +39,26 @@ public class HandlerRecordsConfirmDtoService extends HandlerRecord {
     public void handleRecord(ConsumerRecord<String, String> record) {
 
         try {
+            logger.info("Key = {} topic {} offet {} partition {}", record.key(), record.topic(), record.offset(), record.partition());
             if (!record.key().equals(sendingService.getKafkaProducerId())) {
                 return;
             }
             ConfirmDto confirmDto = mapper.readValue(record.value(), ConfirmDto.class);
-
             List<String> recordKeys = StorageRepository.getRecordKeysBetweenTime(confirmDto.getStartTimestamp(),
                     confirmDto.getEndTimestamp(), sendingService.getKafkaProducerId());
-            List<MessageDto> messages = StorageRepository.getMessageByRecordIds(recordKeys);
-            long checksumFromRepo = messages.stream().mapToLong(dto -> CheckSumService.getCRC32Checksum(dto.getValue().getBytes())).sum();
+            List<MessageDto> messages = StorageRepository.getMessageByRecordIds(recordKeys, sendingService.getKafkaProducerId());
+            long checksumFromRepo = messages.stream().mapToLong(dto -> {
+                long checksum = CheckSumService.getCRC32Checksum(dto.getValue().getBytes());
+                System.out.println("Checksum = " + checksum + " value = " + dto.getValue());
+                return checksum;
+            }).sum();
+            logger.info("Checksum {}  received checksum {}", checksumFromRepo, confirmDto.getCheckSum());
             if (checksumFromRepo != confirmDto.getCheckSum()) {
                 for (MessageDto messageDto : messages) {
                     sendingService.sendToKafka(messageDto.getKeyMessage(), messageDto.getValue());
                 }
             }
             StorageRepository.deleteRecords(recordKeys);
-            logger.info("Received record {} with key ", record, record.key());
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
