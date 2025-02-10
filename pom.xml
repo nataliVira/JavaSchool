@@ -4,6 +4,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <maven-javadoc-plugin-version>3.11.2</maven-javadoc-plugin-version>
+        <json-schema-validator-version>1.4.0</json-schema-validator-version>
+        <kafka-clients-version>3.8.0</kafka-clients-version>
+    </properties>
+
     <groupId>sbp</groupId>
     <artifactId>Lecture2</artifactId>
     <version>1.0-SNAPSHOT</version>
@@ -44,7 +52,37 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
+            <version>${kafka-clients-version}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.networknt</groupId>
+            <artifactId>json-schema-validator</artifactId>
+            <version>${json-schema-validator-version}</version>
+        </dependency>
+
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${maven-javadoc-plugin-version}</version>
+                <configuration>
+                    <source>17</source>
+                    <!--                    <target>17</target>-->
+                </configuration>
+                <!--                <tags>-->
+                <!--                    ...-->
+                <!--                </tags>-->
+            </plugin>
+        </plugins>
+    </build>
 
 
 </project>
