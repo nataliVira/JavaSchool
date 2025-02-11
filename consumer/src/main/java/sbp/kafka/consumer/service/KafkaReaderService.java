@@ -21,7 +21,11 @@ import java.util.Collections;
 public class KafkaReaderService implements Runnable {
     private final static Logger logger = LoggerFactory.getLogger(KafkaReaderService.class);
     private final KafkaConsumer consumer = KafkaConsumerService.getKafkaConsumer();
-    private final HandlerRecord handlerRecord = new HandlerRecord();
+    private final HandlerRecord handlerRecord;
+
+    public KafkaReaderService(HandlerRecord handlerRecord) {
+        this.handlerRecord = handlerRecord;
+    }
 
     @Override
     public void run() {
