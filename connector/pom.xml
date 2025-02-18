@@ -7,28 +7,30 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>producer-with-confirm</artifactId>
+    <artifactId>connector</artifactId>
     <packaging>jar</packaging>
 
-    <name>producer-with-confirm</name>
+    <name>connector</name>
     <url>http://maven.apache.org</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <kafka-version>1.0-SNAPSHOT</kafka-version>
+        <postgre-version>42.7.2</postgre-version>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>sbp</groupId>
-            <artifactId>consumer</artifactId>
-            <version>${kafka-version}</version>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
-            <groupId>sbp</groupId>
-            <artifactId>producer</artifactId>
-            <version>${kafka-version}</version>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgre-version}</version>
         </dependency>
+
     </dependencies>
 </project>

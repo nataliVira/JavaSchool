@@ -8,56 +8,39 @@
         <module>consumer</module>
         <module>producer</module>
         <module>producer-with-confirm</module>
+        <module>connector</module>
     </modules>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
+        <maven-javadoc-plugin-version>3.11.2</maven-javadoc-plugin-version>
         <kafka-clients-version>3.8.0</kafka-clients-version>
         <json-schema-validator-version>1.4.0</json-schema-validator-version>
-        <junit-version>5.11.4</junit-version>
+        <junit-version>5.11.0</junit-version>
         <slf4j-api-version>1.7.36</slf4j-api-version>
         <log4j-api-version>2.24.3</log4j-api-version>
+        <apache-kafka.version>3.3.2</apache-kafka.version>
     </properties>
 
-    <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <maven-javadoc-plugin-version>3.11.2</maven-javadoc-plugin-version>
-        <json-schema-validator-version>1.4.0</json-schema-validator-version>
-        <kafka-clients-version>3.8.0</kafka-clients-version>
-    </properties>
 
     <groupId>sbp</groupId>
     <artifactId>Lecture2</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <properties>
-        <apache-kafka.version>3.3.2</apache-kafka.version>
-        <slf4j.version>1.7.36</slf4j.version>
-    </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.apache.kafka</groupId>
-            <artifactId>kafka-clients</artifactId>
-            <version>${apache-kafka.version}</version>
-        </dependency>
+
         <dependency>
             <groupId>org.apache.kafka</groupId>
             <artifactId>connect-api</artifactId>
             <version>${apache-kafka.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.apache.kafka</groupId>
             <artifactId>connect-json</artifactId>
             <version>${apache-kafka.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
         </dependency>
 
         <dependency>
@@ -104,9 +87,9 @@
             <artifactId>log4j-core</artifactId>
             <version>${log4j-api-version}</version>
         </dependency>
-    </dependencies>
 
     </dependencies>
+
 
     <build>
         <plugins>
