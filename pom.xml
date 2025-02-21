@@ -4,6 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
+
     <modules>
         <module>consumer</module>
         <module>producer</module>
@@ -13,29 +14,17 @@
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <kafka-clients-version>3.8.0</kafka-clients-version>
+        <apache-kafka.version>3.8.0</apache-kafka.version>
         <json-schema-validator-version>1.4.0</json-schema-validator-version>
         <junit-version>5.11.4</junit-version>
         <slf4j-api-version>1.7.36</slf4j-api-version>
         <log4j-api-version>2.24.3</log4j-api-version>
-    </properties>
-
-    <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
         <maven-javadoc-plugin-version>3.11.2</maven-javadoc-plugin-version>
-        <json-schema-validator-version>1.4.0</json-schema-validator-version>
-        <kafka-clients-version>3.8.0</kafka-clients-version>
     </properties>
 
     <groupId>sbp</groupId>
     <artifactId>Lecture2</artifactId>
     <version>1.0-SNAPSHOT</version>
-
-    <properties>
-        <apache-kafka.version>3.3.2</apache-kafka.version>
-        <slf4j.version>1.7.36</slf4j.version>
-    </properties>
 
     <dependencies>
         <dependency>
@@ -43,11 +32,13 @@
             <artifactId>kafka-clients</artifactId>
             <version>${apache-kafka.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.apache.kafka</groupId>
             <artifactId>connect-api</artifactId>
             <version>${apache-kafka.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.apache.kafka</groupId>
             <artifactId>connect-json</artifactId>
@@ -55,22 +46,10 @@
         </dependency>
 
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>${junit-version}</version>
             <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.kafka</groupId>
-            <artifactId>kafka-clients</artifactId>
-            <version>${kafka-clients-version}</version>
         </dependency>
 
         <dependency>
@@ -106,8 +85,6 @@
         </dependency>
     </dependencies>
 
-    </dependencies>
-
     <build>
         <plugins>
             <plugin>
@@ -116,11 +93,7 @@
                 <version>${maven-javadoc-plugin-version}</version>
                 <configuration>
                     <source>17</source>
-                    <!--                    <target>17</target>-->
                 </configuration>
-                <!--                <tags>-->
-                <!--                    ...-->
-                <!--                </tags>-->
             </plugin>
         </plugins>
     </build>
