@@ -49,7 +49,7 @@ class SendingWithConfirmTest {
         sendingService.sendToKafka(transaction3);
         sendingService.close();
         try {
-            Thread.sleep(100000);
+            Thread.sleep(100);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
