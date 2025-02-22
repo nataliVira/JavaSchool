@@ -20,10 +20,11 @@ import java.util.Collections;
  */
 public class KafkaReaderService implements Runnable {
     private final static Logger logger = LoggerFactory.getLogger(KafkaReaderService.class);
-    private final KafkaConsumer consumer = KafkaConsumerService.getKafkaConsumer();
+    private final Consumer consumer;
     private final HandlerRecord handlerRecord;
 
-    public KafkaReaderService(HandlerRecord handlerRecord) {
+    public KafkaReaderService(Consumer consumer, HandlerRecord handlerRecord) {
+        this.consumer =consumer;
         this.handlerRecord = handlerRecord;
     }
 

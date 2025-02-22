@@ -2,6 +2,7 @@ package sbp.kafka.producer.confirm.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.kafka.clients.producer.RecordMetadata;
+import sbp.kafka.consumer.service.KafkaConsumerService;
 import sbp.kafka.consumer.service.KafkaReaderService;
 import sbp.school.kafka.dto.Transaction;
 import sbp.school.kafka.exception.BadParameterException;
@@ -26,7 +27,8 @@ public class SendingWithConfirm {
         });
 
         Executor executor = Executors.newSingleThreadExecutor();
-        KafkaReaderService kafkaReaderService = new KafkaReaderService(new HandlerRecordsConfirmDtoService(sendingService));
+        KafkaReaderService kafkaReaderService = new KafkaReaderService(KafkaConsumerService.getKafkaConsumer(),
+                new HandlerRecordsConfirmDtoService(sendingService));
         executor.execute(kafkaReaderService);
     }
 

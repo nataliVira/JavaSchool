@@ -20,7 +20,7 @@
         <junit-version>5.11.0</junit-version>
         <slf4j-api-version>1.7.36</slf4j-api-version>
         <log4j-api-version>2.24.3</log4j-api-version>
-        <apache-kafka.version>3.3.2</apache-kafka.version>
+        <mockito-core-version>5.5.0</mockito-core-version>
     </properties>
 
 
@@ -34,13 +34,13 @@
         <dependency>
             <groupId>org.apache.kafka</groupId>
             <artifactId>connect-api</artifactId>
-            <version>${apache-kafka.version}</version>
+            <version>${kafka-clients-version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.kafka</groupId>
             <artifactId>connect-json</artifactId>
-            <version>${apache-kafka.version}</version>
+            <version>${kafka-clients-version}</version>
         </dependency>
 
         <dependency>
@@ -86,6 +86,13 @@
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
             <version>${log4j-api-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito-core-version}</version>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>
