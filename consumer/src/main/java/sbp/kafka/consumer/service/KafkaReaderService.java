@@ -30,6 +30,7 @@ public class KafkaReaderService implements Runnable {
 
     @Override
     public void run() {
+        logger.info("KafkaReaderService started");
         HandlerRebalance handlerRebalance = new HandlerRebalance(consumer);
         consumer.subscribe(Collections.singletonList(PropsConsumer.getProperties().getProperty("topic")), handlerRebalance);
         int count = 0;

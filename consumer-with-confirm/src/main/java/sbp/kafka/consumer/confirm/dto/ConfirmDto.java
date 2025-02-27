@@ -1,19 +1,15 @@
-package sbp.kafka.producer.confirm.dto;
+package sbp.kafka.consumer.confirm.dto;
 
 
-import java.io.Serializable;
-
-public class ConfirmDto implements Serializable {
-
+public class ConfirmDto {
+    public ConfirmDto() {
+    }
 
     private long checkSum;
 
     private long startTimestamp;
 
     private long endTimestamp;
-
-    public ConfirmDto() {
-    }
 
     public ConfirmDto(long checkSum, long startTimestamp, long endTimestamp) {
         this.checkSum = checkSum;

@@ -59,7 +59,7 @@ public abstract class KafkaProdeucerService {
             } else {
                 handleRecordMetadata(recordMetadata, key, value, getKafkaProducerId());
                 System.out.println("Successful " + "Topic " + recordMetadata.topic() + " Offset " + recordMetadata.offset() +
-                        " Partition " + recordMetadata.partition());
+                        " Partition " + recordMetadata.partition() + " key " + key + " value " + value);
             }
         });
     }

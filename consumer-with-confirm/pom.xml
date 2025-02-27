@@ -7,15 +7,14 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>producer-with-confirm</artifactId>
+    <artifactId>consumer-with-confirm</artifactId>
     <packaging>jar</packaging>
 
-    <name>producer-with-confirm</name>
+    <name>consumer-with-confirm</name>
     <url>http://maven.apache.org</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <kafka-version>1.0-SNAPSHOT</kafka-version>
     </properties>
 
     <dependencies>
@@ -27,22 +26,21 @@
         </dependency>
         <dependency>
             <groupId>sbp</groupId>
+            <artifactId>producer</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>sbp</groupId>
             <artifactId>consumer</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>sbp</groupId>
-            <artifactId>producer</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>sbp</groupId>
             <artifactId>utils</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
-         </dependency>  
+        </dependency>
     </dependencies>
 </project>

@@ -10,6 +10,7 @@ import java.util.concurrent.Executors;
 public class ConsumerMainClass {
 
     public static void main(String[] args) {
+
     }
 
 }

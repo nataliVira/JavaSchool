@@ -1,6 +1,5 @@
 package sbp.school.kafka.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.junit.jupiter.api.Test;
 import sbp.school.kafka.config.Props;
