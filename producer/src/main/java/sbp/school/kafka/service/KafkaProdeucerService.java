@@ -33,9 +33,7 @@ public abstract class KafkaProdeucerService {
         producerProperties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, properties.get("key.serializer"));
         producerProperties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, properties.get("value.serializer"));
         producer = new KafkaProducer<>(producerProperties);
-
         kafkaProducerId = (String) properties.get(PRODUCER_ID_KEY);
-
         headers = new ArrayList<>();
         headers.add(new RecordHeader(PRODUCER_ID_KEY, kafkaProducerId.getBytes()));
     }

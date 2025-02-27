@@ -24,7 +24,7 @@ public class KafkaReaderService implements Runnable {
     private final HandlerRecord handlerRecord;
 
     public KafkaReaderService(Consumer consumer, HandlerRecord handlerRecord) {
-        this.consumer =consumer;
+        this.consumer = consumer;
         this.handlerRecord = handlerRecord;
     }
 
