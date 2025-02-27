@@ -1,5 +1,6 @@
 package sbp.kafka.consumer.service;
 
+import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import sbp.kafka.consumer.config.PropsConsumer;
 
@@ -10,7 +11,7 @@ import sbp.kafka.consumer.config.PropsConsumer;
  */
 public class KafkaConsumerService {
 
-    public static KafkaConsumer getKafkaConsumer() {
+    public static Consumer getKafkaConsumer() {
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(PropsConsumer.getProperties());
         return consumer;
     }

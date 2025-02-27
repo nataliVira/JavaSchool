@@ -1,5 +1,6 @@
 package sbp.kafka.consumer.service;
 
+import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRebalanceListener;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.consumer.OffsetAndMetadata;
@@ -18,11 +19,11 @@ import java.util.Map;
  * @version 1.0
  */
 public class HandlerRebalance implements ConsumerRebalanceListener {
-    private KafkaConsumer<String, String> consumer;
+    private Consumer<String, String> consumer;
     private Map<TopicPartition, OffsetAndMetadata> currentOffsets = new HashMap<>();
     Logger logger = LoggerFactory.getLogger(HandlerRebalance.class);
 
-    public HandlerRebalance(KafkaConsumer<String, String> consumer) {
+    public HandlerRebalance(Consumer<String, String> consumer) {
         this.consumer = consumer;
     }
 
