@@ -28,9 +28,9 @@ public class StorageRepository {
                 .map(Map.Entry::getKey).collect(Collectors.toList());
     }
 
-    public static List<MessageDto> getMessageByRecordIds(List<String> recordIds) {
-        return mapRecords.entrySet().stream().filter(entry -> recordIds.contains(entry.getKey()))
-                .map(Map.Entry::getValue).collect(Collectors.toList());
+    public static List<MessageDto> getMessageByRecordIds(List<String> recordIds, String kafkaProducerId) {
+        return mapRecords.entrySet().stream()
+                .filter(entry -> recordIds.contains(entry.getKey()) && entry.getValue().getKafkaProducerId().equals(kafkaProducerId))
     }
 
     /**
@@ -56,7 +56,6 @@ public class StorageRepository {
         String keyRecord = getKey(recordMetadata);
         mapRecords.put(keyRecord, new MessageDto(key, value, kafkaProducerId, recordMetadata.timestamp()));
         logger.info("Added records: {} {} ", key, recordMetadata.timestamp());
-
     }
 
     /**
