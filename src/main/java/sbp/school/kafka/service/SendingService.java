@@ -3,38 +3,36 @@ package sbp.school.kafka.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.kafka.common.header.Header;
 import sbp.school.kafka.config.Props;
 import sbp.school.kafka.dto.Transaction;
+import sbp.school.kafka.enums.OperationTypeEnum;
 import sbp.school.kafka.exception.BadParameterException;
 
 import java.io.IOException;
-import java.util.List;
+
+import static sbp.school.kafka.enums.OperationTypeEnum.*;
 
 /**
  * Класс по отправке входящих транзакций
  */
 public class SendingService {
 
+    private static final String OPERATION_TYPE = "operationType";
     private final ObjectMapper mapper;
     private final JsonValidationService jsonValidationService;
-
-    private final KafkaProdeucerService kafkaProdeucerService;
-
 
     /**
      * Конструктор - создание нового объекта
      */
-    public SendingService(KafkaProdeucerService kafkaProdeucerService) {
-        this.jsonValidationService = new JsonValidationService();
+    public SendingService(JsonValidationService jsonValidationService) {
+        this.jsonValidationService = jsonValidationService;
         this.mapper = new ObjectMapper();
-        this.kafkaProdeucerService = kafkaProdeucerService;
     }
 
     /**
      * Метод отправки объекта
      *
-     * @param transaction JSON представление объекта класса {@link Transaction}
+     * @param transaction JSON представление объекта класса {@link sbp.school.kafka.dto.Transaction}
      * @throws JsonProcessingException
      * @throws BadParameterException
      */
@@ -48,44 +46,35 @@ public class SendingService {
         if (topic == null) {
             throw new BadParameterException("The topic do not specify in properties");
         }
-        kafkaProdeucerService.send(topic, transaction.getOperationType().name(), jsonTransaction);
+        KafkaProdeucerService.send(topic, getPartition(transaction.getOperationType()), transaction.getOperationType(), jsonTransaction);
     }
 
-    /**
-     * Метод отправки json объекта
-     *
-     * @param JSON представление объекта класса {@link Transaction}
-     * @throws BadParameterException
-     */
-    public void sendToKafka(String key, String json) throws BadParameterException {
-        String topic = Props.getProperties().getProperty("topic");
-        if (topic == null) {
-            throw new BadParameterException("The topic do not specify in properties");
+    private static int getPartition(OperationTypeEnum key) throws BadParameterException {
+        if (WITHDRAWAL == key) {
+            return 0;
         }
-        kafkaProdeucerService.send(topic, key, json);
+        if (ENROLLMENT == key) {
+            return 1;
+        }
+        if (TRANSFER == key) {
+            return 2;
+        }
+        throw new BadParameterException("Bad value of operation type");
     }
 
-    public List<Header> getHeaders() {
-        return kafkaProdeucerService.getHeaders();
-    }
-
-
-    public String getKafkaProducerId() {
-        return kafkaProdeucerService.getKafkaProducerId();
-    }
 
     /**
      * Метод остановки producer
      */
     public void close() {
-        this.kafkaProdeucerService.close();
+        KafkaProdeucerService.close();
     }
 
     /**
      * Метод принудительной отправки сообщений в брокер
      */
-    public void flush() {
-        this.kafkaProdeucerService.flush();
+    public static void flush() {
+        KafkaProdeucerService.flush();
     }
 
 }

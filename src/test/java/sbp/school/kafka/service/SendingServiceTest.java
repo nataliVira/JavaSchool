@@ -1,33 +1,24 @@
-package sbp.kafka.producer.confirm.service;
+package sbp.school.kafka.service;
 
-import org.apache.kafka.common.header.Header;
-import org.apache.kafka.common.header.internals.RecordHeader;
 import org.junit.jupiter.api.Test;
-
-import sbp.kafka.consumer.service.JsonValidationService;
-import sbp.school.kafka.config.Props;
 import sbp.school.kafka.dto.Transaction;
 import sbp.school.kafka.exception.BadParameterException;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static sbp.school.kafka.enums.OperationTypeEnum.*;
 
-class SendingWithConfirmTest {
+
+class SendingServiceTest {
+
     @Test
     void sendToKafka() throws BadParameterException, IOException {
-
-        List<Header> headers = new ArrayList<>();
-
-        headers.add(new RecordHeader("id", "1".getBytes()));
-
         JsonValidationService jsonValidationService = new JsonValidationService();
 
-        SendingWithConfirm sendingService = new SendingWithConfirm(Props.getProperties());
+        SendingService sendingService = new SendingService(jsonValidationService);
         Transaction transaction1 = new Transaction();
         transaction1.setOperationType(WITHDRAWAL);
         transaction1.setSum(new BigDecimal("0.1"));
@@ -48,13 +39,7 @@ class SendingWithConfirmTest {
         transaction3.setAccount("11111111111");
         transaction3.setDate(LocalDateTime.of(2024, 12, 13, 0, 0, 0));
         sendingService.sendToKafka(transaction3);
-
         sendingService.close();
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
     }
 
 }

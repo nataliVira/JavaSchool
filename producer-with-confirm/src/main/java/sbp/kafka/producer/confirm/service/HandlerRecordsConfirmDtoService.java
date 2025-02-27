@@ -7,6 +7,7 @@ import sbp.kafka.consumer.service.HandlerRecord;
 import sbp.kafka.producer.confirm.dto.ConfirmDto;
 import sbp.kafka.producer.confirm.dto.MessageDto;
 import sbp.school.kafka.service.CheckSumService;
+
 import sbp.school.kafka.service.SendingService;
 
 import java.util.List;
@@ -40,10 +41,12 @@ public class HandlerRecordsConfirmDtoService extends HandlerRecord {
 
         try {
             logger.info("Key = {} topic {} offet {} partition {}", record.key(), record.topic(), record.offset(), record.partition());
+
             if (!record.key().equals(sendingService.getKafkaProducerId())) {
                 return;
             }
             ConfirmDto confirmDto = mapper.readValue(record.value(), ConfirmDto.class);
+
             List<String> recordKeys = StorageRepository.getRecordKeysBetweenTime(confirmDto.getStartTimestamp(),
                     confirmDto.getEndTimestamp(), sendingService.getKafkaProducerId());
             List<MessageDto> messages = StorageRepository.getMessageByRecordIds(recordKeys, sendingService.getKafkaProducerId());
@@ -53,6 +56,7 @@ public class HandlerRecordsConfirmDtoService extends HandlerRecord {
                 return checksum;
             }).sum();
             logger.info("Checksum {}  received checksum {}", checksumFromRepo, confirmDto.getCheckSum());
+
             if (checksumFromRepo != confirmDto.getCheckSum()) {
                 for (MessageDto messageDto : messages) {
                     sendingService.sendToKafka(messageDto.getKeyMessage(), messageDto.getValue());

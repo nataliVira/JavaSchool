@@ -5,6 +5,7 @@ import java.io.Serializable;
 
 public class ConfirmDto implements Serializable {
 
+
     private long checkSum;
 
     private long startTimestamp;

@@ -31,6 +31,9 @@ class SendingServiceTest {
         transaction1.setSum(new BigDecimal("0.1"));
         transaction1.setAccount("11111111111");
         transaction1.setDate(LocalDateTime.of(2024, 12, 13, 0, 0, 0));
+        ObjectMapper mapper = new ObjectMapper();
+        System.out.println("====> " + mapper.writeValueAsString(transaction1));
+
         sendingService.sendToKafka(transaction1);
 
         Transaction transaction2 = new Transaction();

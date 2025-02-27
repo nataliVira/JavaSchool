@@ -31,7 +31,6 @@ public class StorageRepository {
     public static List<MessageDto> getMessageByRecordIds(List<String> recordIds, String kafkaProducerId) {
         return mapRecords.entrySet().stream()
                 .filter(entry -> recordIds.contains(entry.getKey()) && entry.getValue().getKafkaProducerId().equals(kafkaProducerId))
-                .map(Map.Entry::getValue).collect(Collectors.toList());
     }
 
     /**
